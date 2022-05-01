@@ -1,0 +1,51 @@
+blueprint:
+  name: Zigbee2MQTT - Ikea dimmer
+  description: Automate your Ikea dimmer (IKEA ICTC-G-1) via Zigbee2MQTT.
+  domain: automation
+  input:
+    switch:
+      name: Ikea Dimmer
+      description: Ikea dimmer to use
+      selector:
+        entity:
+          domain: sensor
+          integration: mqtt
+
+    dimmer_rotate_left:
+      name: Rotate to the left
+      description: Rotate the dimmer left
+      default: []
+      selector:
+        action: null
+    dimmer_rotate_right:
+      name: Rotate to the right
+      description: Rotate the dimmer to the right
+      default: []
+      selector:
+        action: null
+
+mode: single
+max_exceeded: silent
+
+variables:
+  command: "{{ trigger.payload }}"
+  topic: "{{ trigger.topic }}"
+  switch_name: !input "switch"
+  deviceName: "{{ state_attr(switch_name, 'friendly_name') }}"
+
+trigger:
+  - platform: mqtt
+    topic: "zigbee2mqtt/+/action"
+
+action:
+  - choose:
+      - conditions:
+          - "{{ topic.split('/')[1].replace('/', '') == deviceName.split(' ')[0] }}"
+        sequence:
+          - choose:
+              - conditions:
+                  - "{{ command == 'rotate_left' }}"
+                sequence: !input "dimmer_rotate_left"
+              - conditions:
+                  - "{{ command == 'rotate_right' }}"
+                sequence: !input "dimmer_rotate_right"
