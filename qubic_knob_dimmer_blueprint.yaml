@@ -1,11 +1,11 @@
 blueprint:
-  name: Zigbee2MQTT - Ikea dimmer
-  description: Automate your Ikea dimmer (IKEA ICTC-G-1) via Zigbee2MQTT.
+  name: Zigbee2MQTT - qubic dimmer
+  description: Automate your qubic dimmer (qubic knob) via Zigbee2MQTT.
   domain: automation
   input:
     switch:
-      name: Ikea Dimmer
-      description: Ikea dimmer to use
+      name: qubic Dimmer
+      description: qubic dimmer to use
       selector:
         entity:
           domain: sensor
@@ -44,8 +44,8 @@ action:
         sequence:
           - choose:
               - conditions:
-                  - "{{ command == 'rotate_left' }}"
+                  - "{{ command == 'left' }}"
                 sequence: !input "dimmer_rotate_left"
               - conditions:
-                  - "{{ command == 'rotate_right' }}"
+                  - "{{ command == 'right' }}"
                 sequence: !input "dimmer_rotate_right"
