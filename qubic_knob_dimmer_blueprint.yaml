@@ -11,13 +11,13 @@ blueprint:
           domain: sensor
           integration: mqtt
 
-    dimmer_rotate_left:
+    dimmer_left:
       name: Rotate to the left
       description: Rotate the dimmer left
       default: []
       selector:
         action: null
-    dimmer_rotate_right:
+    dimmer_right:
       name: Rotate to the right
       description: Rotate the dimmer to the right
       default: []
@@ -45,7 +45,7 @@ action:
           - choose:
               - conditions:
                   - "{{ command == 'left' }}"
-                sequence: !input "dimmer_rotate_left"
+                sequence: !input "dimmer_left"
               - conditions:
                   - "{{ command == 'right' }}"
-                sequence: !input "dimmer_rotate_right"
+                sequence: !input "dimmer_right"
